@@ -35,7 +35,7 @@ function parseRepo(repo) {
     result.url = repo.html_url;
     result.language = repo.language;
     result.show = true
-    if (repo.homepage != "") {
+    if (repo.homepage != "" && repo.homepage != null) {
         result.website = repo.homepage;
     } else if (result.has_pages) {
         result.website = "mwpuppire.github.io/" + result.name;
