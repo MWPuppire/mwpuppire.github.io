@@ -34,10 +34,13 @@ function parseRepo(repo) {
     result.name = repo.name;
     result.url = repo.html_url;
     result.language = repo.language;
+    result.show = true
     if (repo.homepage != "") {
         result.website = repo.homepage;
+    } else if (result.has_pages) {
+        result.website = "mwpuppire.github.io/" + result.name;
     } else {
-        result.website = false;
+        result.show = false
     };
     return result;
 };
@@ -55,20 +58,21 @@ function createElement(elem, text, id, className, href) {
 };
 
 function createItem(item) {
-    var main = createElement("li", "");
-    var div = createElement("div", "");
-    if (item.website) {var website = item.website} else {var website = item.url};
-    var link = createElement("a", "", "", "item", website);
-    link.setAttribute("target", "_blank");
-    var titlespan = createElement("span", item.name, "", "desc");
-    var descspan = createElement("span", item.desc, "", "desc");
-    var readmespan = createElement("span", item.readme, "", "desc");
-    link.appendChild(titlespan);
-    link.appendChild(descspan);
-    link.appendChild(readmespan);
-    div.appendChild(link);
-    main.appendChild(div);
-    return main;
+    if (item.show) {
+        var main = createElement("li", "");
+        var div = createElement("div", "");
+        var link = createElement("a", "", "", "item", item.website);
+        link.setAttribute("target", "_blank");
+        var titlespan = createElement("span", item.name, "", "desc");
+        var descspan = createElement("span", item.desc, "", "desc");
+        var readmespan = createElement("span", item.readme, "", "desc");
+        link.appendChild(titlespan);
+        link.appendChild(descspan);
+        link.appendChild(readmespan);
+        div.appendChild(link);
+        main.appendChild(div);
+        return main;
+    } else {return createElement("li", "")}
 };
 
 function getOrgs(user) {
